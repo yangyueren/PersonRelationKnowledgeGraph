@@ -6,6 +6,8 @@ from func_timeout import func_set_timeout, FunctionTimedOut
 import requests
 import json
 
+import handout
+
 # person is a dict to store the id to name
 # person_spidered is the set to store the name that has been spidered
 # person_unspider is the set to store the name that has not been spidered
@@ -42,7 +44,7 @@ class Spider:
         if response.text.__contains__('਍'):
             text = response.text.replace('਍', '')
         j = json.loads(text)
-        with open('name2id.txt', 'a+', encoding='utf-8') as f:
+        with open('data/name2id.txt', 'a+', encoding='utf-8') as f:
             for i in j['nodes']:
 
                 if i['id'] not in person.keys():
@@ -51,12 +53,12 @@ class Spider:
                 if i['name'] not in person_spidered:
                     person_unspider.add(i['name'])
 
-        with open('name_intro.txt', 'a+', encoding='utf-8') as f:
+        with open('data/name_intro.txt', 'a+', encoding='utf-8') as f:
             item = j['nodes'][0]
             if 'intro' in item.keys():
                 f.write(item['id'] + "\t" + item['name'] + "\t" + item['intro'] + '\n')
 
-        with open('relation.txt', 'a+', encoding='utf-8') as f:
+        with open('data/relation.txt', 'a+', encoding='utf-8') as f:
             for i in j['links']:
                 f.write(
                     person.get(i['from']) + "\t" + person.get(i['to']) + "\t" + i['name'] + "\t" + str(i['type']) + "\n")
